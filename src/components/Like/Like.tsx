@@ -12,6 +12,7 @@ const Like = ({ onClick }: Props) => {
 
   const handleLike = () => {
     setIsLiked(!isLiked);
+    console.log(isLiked);
     onClick();
   };
   if (isLiked)
