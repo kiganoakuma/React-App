@@ -1,22 +1,14 @@
 import { useState } from "react";
+import ExpandableText from "./components/ExpandableText";
 
 const App = () => {
-  interface Props {}
+  const handleClick = () => {};
 
-  const Cart = ({}: Props) => {
-    const [game, setGame] = useState({
-      id: 1,
-      player: {
-        name: "John",
-      },
-    });
-
-    const handleClick = () => {
-      setGame({ ...game, player: { ...game.player, name: "Bob" } });
-    };
-
-    return <div></div>;
-  };
+  return (
+    <div>
+      <ExpandableText maxChars={100}>HEllo world</ExpandableText>
+    </div>
+  );
 };
 
 export default App;
