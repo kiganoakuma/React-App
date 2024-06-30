@@ -1,12 +1,12 @@
 import { useState } from "react";
-import ExpandableText from "./components/ExpandableText";
+import Form from "./components/Form";
 
 const App = () => {
   const handleClick = () => {};
 
   return (
     <div>
-      <ExpandableText maxChars={100}>HEllo world</ExpandableText>
+      <Form />
     </div>
   );
 };
