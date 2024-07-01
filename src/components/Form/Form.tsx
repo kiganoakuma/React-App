@@ -5,9 +5,11 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const schema = z.object({
-  name: z.string().min(3, { message: "Name must be at least 3 characters." }),
-  age: z
-    .number({ invalid_type_error: "Age field is required." })
+  description: z
+    .string()
+    .min(3, { message: "Description must be at least 3 characters." }),
+  amount: z
+    .number({ invalid_type_error: "amount field is required." })
     .min(18, { message: "Must be at least 18." }),
 });
 
@@ -25,28 +27,52 @@ const Form = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-3">
-        <label htmlFor="name" className="form-label">
-          Name
+        <label htmlFor="description" className="form-label">
+          Description
         </label>
         <input
-          {...register("name")}
-          id="name"
+          {...register("description")}
+          id="description"
           type="text"
           className="form-control"
         />
-        {errors.name && <p className="error-message">{errors.name.message}</p>}
+        {errors.description && (
+          <p className="error-message">{errors.description.message}</p>
+        )}
       </div>
       <div className="mb-3">
-        <label htmlFor="age" className="form-label">
-          Age
+        <label htmlFor="amount" className="form-label">
+          Amount
         </label>
         <input
-          {...register("age", { valueAsNumber: true })}
-          id="age"
+          {...register("amount", { valueAsNumber: true })}
+          id="amount"
           type="number"
           className="form-control"
         />
-        {errors.age && <p className="error-message">{errors.age.message}</p>}
+        {errors.amount && (
+          <p className="error-message">{errors.amount.message}</p>
+        )}
+      </div>
+      <div className="mb-3">
+        <select
+          id="categories"
+          className="form-select"
+          aria-label="Default select example"
+        >
+          <option id="default-option" value="default">
+            Categories
+          </option>
+          <option id="category-option" value="1">
+            Utilities
+          </option>
+          <option id="category-option" value="2">
+            Entertainment
+          </option>
+          <option id="category-option" value="3">
+            Groceries
+          </option>
+        </select>
       </div>
       <button disabled={!isValid} type="submit" className="btn btn-primary">
         Submit
