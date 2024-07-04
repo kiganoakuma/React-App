@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
-import "./Form.css";
+import "./ExpenseForm.css";
 import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,7 +18,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-const Form = () => {
+const ExpenseForm = () => {
   const {
     register,
     handleSubmit,
@@ -91,4 +91,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default ExpenseForm;
