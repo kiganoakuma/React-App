@@ -1,37 +1,25 @@
-import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
-import "./ExpenseForm.css";
-import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
+import categories from "../../categories";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const schema = z.object({
-  description: z
-    .string()
-    .min(3, { message: "Description must be at least 3 characters." }),
-  amount: z
-    .number({ invalid_type_error: "amount field is required." })
-    .min(0, { message: "Must be at least 18." }),
-  category: z.enum(["entertainment", "utilities", "groceries"], {
-    message: "Category is required",
-  }),
+  description: z.string().min(3).max(50),
+  amount: z.number().min(0.01).max(100_000),
+  category: z.enum(categories),
 });
 
-type FormData = z.infer<typeof schema>;
+type ExpenseFormData = z.infer<typeof schema>;
 
 const ExpenseForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
-
-  const onSubmit = (data: FieldValues) => {
-    const spread = { ...data };
-    console.log(spread);
-  };
+    formState: { errors },
+  } = useForm<ExpenseFormData>({ resolver: zodResolver(schema) });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form>
       <div className="mb-3">
         <label htmlFor="description" className="form-label">
           Description
@@ -43,7 +31,7 @@ const ExpenseForm = () => {
           className="form-control"
         />
         {errors.description && (
-          <p className="error-message">{errors.description.message}</p>
+          <p className="text-danger">{errors.description.message}</p>
         )}
       </div>
       <div className="mb-3">
@@ -51,42 +39,32 @@ const ExpenseForm = () => {
           Amount
         </label>
         <input
-          {...register("amount", { valueAsNumber: true })}
+          {...register("amount")}
           id="amount"
           type="number"
           className="form-control"
         />
         {errors.amount && (
-          <p className="error-message">{errors.amount.message}</p>
+          <p className="text-danger">{errors.amount.message}</p>
         )}
       </div>
       <div className="mb-3">
-        <select
-          {...register("category")}
-          id="categories"
-          className="form-select"
-          aria-label="Default select example"
-        >
-          <option id="default-option" value="default">
-            Categories
-          </option>
-          <option id="category-option" value="utilities">
-            Utilities
-          </option>
-          <option id="category-option" value="entertainment">
-            Entertainment
-          </option>
-          <option id="category-option" value="groceries">
-            Groceries
-          </option>
+        <label htmlFor="category" className="form-label">
+          Category
+        </label>
+        <select {...register("category")} id="category" className="form-select">
+          <option value="">Select a Category</option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
         </select>
+        {errors.category && (
+          <p className="text-danger">{errors.category.message}</p>
+        )}
       </div>
-      {errors.category && (
-        <p className="error-message">{errors.category.message}</p>
-      )}
-      <button disabled={!isValid} type="submit" className="btn btn-primary">
-        Submit
-      </button>
+      <button className="btn btn-primary">Submit</button>
     </form>
   );
 };
