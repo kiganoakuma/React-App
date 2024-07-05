@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { isValid, z } from "zod";
 import categories from "../../categories";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,7 +28,7 @@ const ExpenseForm = ({ onSubmit }: Props) => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<ExpenseFormData>({ resolver: zodResolver(schema) });
 
   return (
@@ -83,7 +83,9 @@ const ExpenseForm = ({ onSubmit }: Props) => {
           <p className="text-danger">{errors.category.message}</p>
         )}
       </div>
-      <button className="btn btn-primary">Submit</button>
+      <button disabled={!isValid} className="btn btn-primary">
+        Submit
+      </button>
     </form>
   );
 };

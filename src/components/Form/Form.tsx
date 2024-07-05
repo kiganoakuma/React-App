@@ -1,19 +1,12 @@
-import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
-import "./Form.css";
 import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const schema = z.object({
-  description: z
-    .string()
-    .min(3, { message: "Description must be at least 3 characters." }),
-  amount: z
-    .number({ invalid_type_error: "amount field is required." })
-    .min(0, { message: "Must be at least 18." }),
-  category: z.enum(["entertainment", "utilities", "groceries"], {
-    message: "Category is required",
-  }),
+  name: z.string().min(3, { message: "Name must be at least 3 characters." }),
+  age: z
+    .number({ invalid_type_error: "Age field is required." })
+    .min(18, { message: "Age must be at least 18." }),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -25,66 +18,35 @@ const Form = () => {
     formState: { errors, isValid },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
-  const onSubmit = (data: FieldValues) => {
-    const spread = { ...data };
-    console.log(spread);
-  };
+  const onSubmit = (data: FieldValues) => console.log(data);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-3">
-        <label htmlFor="description" className="form-label">
-          Description
+        <label htmlFor="name" className="form-label">
+          Name
         </label>
         <input
-          {...register("description")}
-          id="description"
+          {...register("name")}
+          id="name"
           type="text"
           className="form-control"
         />
-        {errors.description && (
-          <p className="error-message">{errors.description.message}</p>
-        )}
+        {errors.name && <p className="text-danger">{errors.name.message}</p>}
       </div>
       <div className="mb-3">
-        <label htmlFor="amount" className="form-label">
-          Amount
+        <label htmlFor="age" className="form-label">
+          Age
         </label>
         <input
-          {...register("amount", { valueAsNumber: true })}
-          id="amount"
+          {...register("age", { valueAsNumber: true })}
+          id="age"
           type="number"
           className="form-control"
         />
-        {errors.amount && (
-          <p className="error-message">{errors.amount.message}</p>
-        )}
+        {errors.age && <p className="text-danger">{errors.age.message}</p>}
       </div>
-      <div className="mb-3">
-        <select
-          {...register("category")}
-          id="categories"
-          className="form-select"
-          aria-label="Default select example"
-        >
-          <option id="default-option" value="default">
-            Categories
-          </option>
-          <option id="category-option" value="utilities">
-            Utilities
-          </option>
-          <option id="category-option" value="entertainment">
-            Entertainment
-          </option>
-          <option id="category-option" value="groceries">
-            Groceries
-          </option>
-        </select>
-      </div>
-      {errors.category && (
-        <p className="error-message">{errors.category.message}</p>
-      )}
-      <button disabled={!isValid} type="submit" className="btn btn-primary">
+      <button disabled={!isValid} className="btn btn-primary" type="submit">
         Submit
       </button>
     </form>
