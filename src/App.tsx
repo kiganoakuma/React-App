@@ -9,12 +9,7 @@ import categories from "./expense-tracker/categories";
 const App = () => {
   const [selectCategory, setSelectedCategory] = useState("");
 
-  const [expenses, setExpenses] = useState([
-    { id: 1, description: "aa", amount: 10, category: "Utilities" },
-    { id: 2, description: "ddd", amount: 40, category: "Groceries" },
-    { id: 3, description: "vvv", amount: 20, category: "Entertainment" },
-    { id: 4, description: "sss", amount: 80, category: "Utilities" },
-  ]);
+  const [expenses, setExpenses] = useState([]);
 
   const visibleExpenses = selectCategory
     ? expenses.filter((e) => e.category === selectCategory)
