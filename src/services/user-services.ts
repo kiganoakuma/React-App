@@ -8,11 +8,11 @@ export interface User {
 class UserServices {
   getAllUsers() {
     const controller = new AbortController();
-    const request = apiClient
-      .get<User[]>("/users", {
-        signal: controller.signal,
-      })
-    return { request, cancel: () => controller.abort() }
+    const request = apiClient.get<User[]>("/users", {
+      signal: controller.signal,
+    });
+    const delete = apiClient.delete("/users/" + user.id)
+    return { request, cancel: () => controller.abort() };
   }
 }
 
