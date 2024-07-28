@@ -1,29 +1,8 @@
-import { original } from "immer";
-import { useEffect, useState } from "react";
-import apiClient, { CanceledError } from "./services/api-client";
 import userServices, { User } from "./services/user-services";
+import useUsers from "./hooks/useUsers";
 
 const App = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [error, setError] = useState("");
-  const [isLoading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setLoading(true);
-    const { request, cancel } = userServices.getAll();
-    request.then((res) => {
-      setUsers(res.data);
-      setLoading(false);
-    });
-    request.catch((err) => {
-      if (err instanceof CanceledError) return;
-      setError(err.message);
-      setLoading(false);
-    });
-
-    return () => cancel();
-  }, []);
-
+  const { users, error, isLoading, setUsers, setError } = useUsers();
   const deleteUser = (user: User) => {
     const originalUsers = [...users];
     setUsers(users.filter((u) => u.id !== user.id));
